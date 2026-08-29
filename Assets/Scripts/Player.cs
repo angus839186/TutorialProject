@@ -3,37 +3,31 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
+
+//Player接收輸入--->Player輸出事件(Action)---->有訂閱Player事件的腳本接收事件通知---->接收通知後，做他們要做的事情
 public class Player : MonoBehaviour
 {
-    #region 欄位變數、公開變數
+
+    public event Action<Vector2> OnMoveInput;
+    public event Action<Vector2> OnLookInput;
+    public event Action OnFireInput;
+
     [Header("輸入")]
-    public Vector2 moveInput;
-    public Vector2 rotateInput;
-    [SerializeField] Vector3 Move;
-
-    public PlayerLook playerLook;
-    public PlayerMove playerMove;
-
-
-    [Header("組件")]
-    [SerializeField] CharacterController character;
     [SerializeField] PlayerInput Input;
 
-    public float speed;
 
-    #endregion
 
     [Header("動作")]
-    InputAction moveAction;
-    InputAction Look;
+    InputAction move;
+    InputAction look;
+    InputAction fire;
 
 
     void Awake()
     {
         Input = GetComponent<PlayerInput>();
-        character = GetComponent<CharacterController>();
-        moveAction = Input.actions["Move"];
-        Look = Input.actions["Look"];
+        move = Input.actions["Move"];
+        look = Input.actions["Look"];
     }
 
     void Start()
@@ -41,41 +35,27 @@ public class Player : MonoBehaviour
     }
     void OnEnable()
     {
-        moveAction.performed += OnMove;
-        moveAction.canceled += OnMove;
-        Look.performed += OnLook;
-        Look.canceled += OnLook;
+        move.performed += OnMove;
+        move.canceled += OnMove;
+        look.performed += OnLook;
+        look.canceled += OnLook;
     }
     void OnDisable()
     {
-        moveAction.performed -= OnMove;
-        moveAction.canceled -= OnMove;
-        Look.performed -= OnLook;
-        Look.canceled -= OnLook;
-    }
-
-    //遊戲開始後會一直更新
-    void Update() //函式、方法、功能
-    {
-        Move = new Vector3(moveInput.x, 0, moveInput.y);
-        Vector3 realMove = Move * speed * Time.deltaTime; //區域變數
-        character.Move(realMove);
-    }
-
-    void FixedUpdate()
-    {
-        playerLook.Look(rotateInput);
+        move.performed -= OnMove;
+        move.canceled -= OnMove;
+        look.performed -= OnLook;
+        look.canceled -= OnLook;
     }
 
     //接收移動輸入
     public void OnMove(InputAction.CallbackContext context)
     {
-        moveInput = context.ReadValue<Vector2>();
+        OnMoveInput?.Invoke(context.ReadValue<Vector2>());
     }
     public void OnLook(InputAction.CallbackContext context)
     {
-        rotateInput = context.ReadValue<Vector2>();
-        Debug.Log(rotateInput);
+        OnLookInput?.Invoke(context.ReadValue<Vector2>());
     }
 
 }

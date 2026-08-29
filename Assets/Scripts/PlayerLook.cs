@@ -8,10 +8,34 @@ public class PlayerLook : MonoBehaviour
 
     public float mouseSentivity = 0f;
 
+    [SerializeField] Player player;
+
+    public Vector2 lookInput;
+
+    void Awake()
+    {
+        player = GetComponent<Player>();
+    }
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    void OnEnable()
+    {
+        player.OnLookInput += SetLookInput;
+    }
+
+    void OnDisable()
+    {
+        player.OnLookInput -= SetLookInput;
+    }
+
+    void Update()
+    {
+        Look(lookInput);
     }
     public void Look(Vector2 lookInput)
     {
@@ -23,6 +47,11 @@ public class PlayerLook : MonoBehaviour
 
         playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX * Time.deltaTime * mouseSentivity);
+    }
+
+    void SetLookInput(Vector2 input)
+    {
+        lookInput = input;
     }
 
 }
