@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
     void Start()
     {
     }
-    void OnEnable() 
+    void OnEnable()
     {
         moveAction.performed += OnMove;
         moveAction.canceled += OnMove;
@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
     {
         moveAction.performed -= OnMove;
         moveAction.canceled -= OnMove;
-         Look.performed -= OnLook;
+        Look.performed -= OnLook;
         Look.canceled -= OnLook;
     }
 
@@ -77,5 +77,5 @@ public class Player : MonoBehaviour
         rotateInput = context.ReadValue<Vector2>();
         Debug.Log(rotateInput);
     }
-    
+
 }
