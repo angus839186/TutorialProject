@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
         Input = GetComponent<PlayerInput>();
         move = Input.actions["Move"];
         look = Input.actions["Look"];
+        fire = Input.actions["Fire"];
     }
 
     void Start()
@@ -39,6 +40,7 @@ public class Player : MonoBehaviour
         move.canceled += OnMove;
         look.performed += OnLook;
         look.canceled += OnLook;
+        fire.performed += OnFire;
     }
     void OnDisable()
     {
@@ -46,6 +48,7 @@ public class Player : MonoBehaviour
         move.canceled -= OnMove;
         look.performed -= OnLook;
         look.canceled -= OnLook;
+        fire.performed -= OnFire;
     }
 
     //接收移動輸入
@@ -56,6 +59,10 @@ public class Player : MonoBehaviour
     public void OnLook(InputAction.CallbackContext context)
     {
         OnLookInput?.Invoke(context.ReadValue<Vector2>());
+    }
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        OnFireInput?.Invoke();
     }
 
 }
