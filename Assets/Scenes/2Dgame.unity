@@ -832,6 +832,7 @@ GameObject:
   - component: {fileID: 1475045936}
   - component: {fileID: 1475045939}
   - component: {fileID: 1475045938}
+  - component: {fileID: 1475045940}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -912,6 +913,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1475045935}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1475045940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1475045935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18b25e5597a21bc47aaac83bc06fc77d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Weapon
+  fireRate: 5
+  magazineSize: 10
+  currentAmmo: 0
+  reloadTime: 1.5
+  isReloading: 0
 --- !u!1 &1729701283
 GameObject:
   m_ObjectHideFlags: 0
@@ -1048,7 +1066,7 @@ MonoBehaviour:
   playerCamera: {fileID: 1343443462}
   xRotation: 0
   mouseSentivity: 10
-  player: {fileID: 0}
+  player: {fileID: 1729701290}
   lookInput: {x: 0, y: 0}
 --- !u!114 &1729701290
 MonoBehaviour:
@@ -1131,8 +1149,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMove
   speed: 10
-  player: {fileID: 0}
-  character: {fileID: 0}
+  player: {fileID: 1729701290}
+  character: {fileID: 1729701292}
   moveInput: {x: 0, y: 0}
 --- !u!114 &1729701294
 MonoBehaviour:
@@ -1149,7 +1167,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 300701342067214713, guid: b0f17f04d9232a44098966e27cdc8253, type: 3}
   muzzlePoint: {fileID: 574144502}
   bulletSpeed: 20
-  player: {fileID: 0}
+  player: {fileID: 1729701290}
+  weapon: {fileID: 1475045940}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

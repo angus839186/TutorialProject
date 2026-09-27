@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public event Action<Vector2> OnMoveInput;
     public event Action<Vector2> OnLookInput;
     public event Action OnFireInput;
+    public event Action OnReloadInput;
 
     [Header("輸入")]
     [SerializeField] PlayerInput Input;
@@ -21,6 +22,7 @@ public class Player : MonoBehaviour
     InputAction move;
     InputAction look;
     InputAction fire;
+    InputAction Reload;
 
 
     void Awake()
@@ -29,6 +31,7 @@ public class Player : MonoBehaviour
         move = Input.actions["Move"];
         look = Input.actions["Look"];
         fire = Input.actions["Fire"];
+        Reload = Input.actions["Reload"];
     }
 
     void Start()
@@ -41,6 +44,7 @@ public class Player : MonoBehaviour
         look.performed += OnLook;
         look.canceled += OnLook;
         fire.performed += OnFire;
+        Reload.performed += OnReload;
     }
     void OnDisable()
     {
@@ -49,6 +53,7 @@ public class Player : MonoBehaviour
         look.performed -= OnLook;
         look.canceled -= OnLook;
         fire.performed -= OnFire;
+        Reload.performed -= OnReload;
     }
 
     //接收移動輸入
@@ -63,6 +68,10 @@ public class Player : MonoBehaviour
     public void OnFire(InputAction.CallbackContext context)
     {
         OnFireInput?.Invoke();
+    }
+    public void OnReload(InputAction.CallbackContext context)
+    {
+        OnReloadInput?.Invoke();
     }
 
 }
