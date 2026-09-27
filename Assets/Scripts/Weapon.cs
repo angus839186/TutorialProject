@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class Weapon : MonoBehaviour
 {
@@ -19,15 +20,24 @@ public class Weapon : MonoBehaviour
     public bool isReloading = false;
     float nextFireTime;
 
+    public event Action OnAmmoChanged;
+    public event Action<bool> Reloading;
+
+    void Awake()
+    {
+        currentAmmo = magazineSize;
+        OnAmmoChanged?.Invoke();
+    }
+
     public bool TryFire()
     {
-        if(isReloading) return false;
-        if(currentAmmo <=0)
+        if (isReloading) return false;
+        if (currentAmmo <= 0)
         {
             Debug.Log("No Ammo");
             return false;
         }
-        if(Time.time < nextFireTime)
+        if (Time.time < nextFireTime)
         {
             return false;
         }
@@ -35,8 +45,9 @@ public class Weapon : MonoBehaviour
         nextFireTime = Time.time + fireInterval;
 
         currentAmmo--;
-        
-        Debug.Log("Ammo:" + currentAmmo+ "/" + magazineSize);
+        OnAmmoChanged?.Invoke();
+
+        Debug.Log("Ammo:" + currentAmmo + "/" + magazineSize);
 
         return true;
     }
@@ -51,10 +62,14 @@ public class Weapon : MonoBehaviour
     IEnumerator ReloadRoutine()
     {
         isReloading = true;
+
         Debug.Log("Reloading...");
+        Reloading?.Invoke(true);
         yield return new WaitForSeconds(reloadTime);
 
         currentAmmo = magazineSize;
+        OnAmmoChanged?.Invoke();
+        Reloading?.Invoke(false);
         isReloading = false;
 
         Debug.Log("Reloaded");
