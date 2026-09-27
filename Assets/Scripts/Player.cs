@@ -6,44 +6,47 @@ public class Player : MonoBehaviour
 {
     public event Action<Vector2> OnMoveInput;
     public event Action<Vector2> OnLookInput;
+    public event Action OnReloadInput;
     public event Action OnFireInput;
 
     [Header("輸入")]
     [SerializeField] PlayerInput Input;
 
-    InputAction moveAction;
-    InputAction Look;
-    InputAction Fire;
+
+
+    [Header("動作")]
+    InputAction move;
+    InputAction look;
+    InputAction fire;
+    InputAction reload;
+
 
     void Awake()
     {
         Input = GetComponent<PlayerInput>();
-
-        moveAction = Input.actions["Move"];
-        Look = Input.actions["Look"];
-        Fire = Input.actions["Fire"];
+        move = Input.actions["Move"];
+        look = Input.actions["Look"];
+        fire = Input.actions["Fire"];
+        reload = Input.actions["Reload"];
     }
 
     void OnEnable()
     {
-        moveAction.performed += OnMove;
-        moveAction.canceled += OnMove;
-
-        Look.performed += OnLook;
-        Look.canceled += OnLook;
-
-        Fire.performed += OnFire;
+        move.performed += OnMove;
+        move.canceled += OnMove;
+        look.performed += OnLook;
+        look.canceled += OnLook;
+        fire.performed += OnFire;
+        reload.performed += OnReload;
     }
-
     void OnDisable()
     {
-        moveAction.performed -= OnMove;
-        moveAction.canceled -= OnMove;
-
-        Look.performed -= OnLook;
-        Look.canceled -= OnLook;
-
-        Fire.performed -= OnFire;
+        move.performed -= OnMove;
+        move.canceled -= OnMove;
+        look.performed -= OnLook;
+        look.canceled -= OnLook;
+        fire.performed -= OnFire;
+        reload.performed -= OnReload;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -60,4 +63,9 @@ public class Player : MonoBehaviour
     {
         OnFireInput?.Invoke();
     }
+    public void OnReload(InputAction.CallbackContext context)
+    {
+        OnReloadInput?.Invoke();
+    }
+
 }

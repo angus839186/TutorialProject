@@ -7,24 +7,38 @@ public class PlayerShoot : MonoBehaviour
     public float bulletSpeed = 20f;
 
     [SerializeField] Player player;
+    [SerializeField] Weapon weapon;
 
     void Awake()
     {
         player = GetComponent<Player>();
+        player.OnReloadInput += Reload;
     }
 
     void OnEnable()
     {
         player.OnFireInput += Shoot;
+        player.OnReloadInput += Reload;
     }
 
     void OnDisable()
     {
         player.OnFireInput -= Shoot;
+        player.OnReloadInput -= Reload;
+    }
+
+    void Reload()
+    {
+        weapon.Reload();
     }
 
     void Shoot()
     {
+        if (!weapon.TryFire())
+        {
+            return;
+        }
+
         GameObject bullet = Instantiate(
             bulletPrefab,
             muzzlePoint.position,
