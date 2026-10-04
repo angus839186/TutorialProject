@@ -16,6 +16,12 @@ public class WeaponHUD : MonoBehaviour
     {
     }
 
+    void Start()
+    {
+        RefreshAmmo();
+        ToggleReloadingHint(false);
+    }
+
     void OnEnable()
     {
         weapon.OnAmmoChanged += RefreshAmmo;
@@ -23,13 +29,13 @@ public class WeaponHUD : MonoBehaviour
     }
     void OnDisable()
     {
-        weapon.OnAmmoChanged += RefreshAmmo;
+        weapon.OnAmmoChanged -= RefreshAmmo;
         weapon.Reloading -= ToggleReloadingHint;
     }
 
     void RefreshAmmo()
     {
-        AmmoText.text = weapon.currentAmmo + "/" + weapon.magazineSize;
+        AmmoText.text = weapon.currentAmmo + " / " + weapon.reserveAmmo;
     }
     void ToggleReloadingHint(bool toggle)
     {
