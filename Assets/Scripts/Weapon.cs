@@ -16,10 +16,6 @@ public class Weapon : MonoBehaviour
     [Header("裝彈時間")]
     public float reloadTime = 1.5f;
 
-    [Header("備用彈藥")]
-    [Min(0)]
-    public int reserveAmmo = 30;
-
 
     public bool isReloading = false;
     float nextFireTime;
@@ -30,6 +26,7 @@ public class Weapon : MonoBehaviour
     void Awake()
     {
         currentAmmo = magazineSize;
+        OnAmmoChanged?.Invoke();
     }
 
     public bool TryFire()
@@ -59,12 +56,6 @@ public class Weapon : MonoBehaviour
         if (isReloading) return;
         if (currentAmmo == magazineSize) return;
 
-        if (reserveAmmo <= 0)
-        {
-            Debug.Log("沒有備彈了");
-            return;
-        }
-
         StartCoroutine(ReloadRoutine());
     }
 
@@ -74,20 +65,14 @@ public class Weapon : MonoBehaviour
 
         Debug.Log("Reloading...");
         Reloading?.Invoke(true);
-
         yield return new WaitForSeconds(reloadTime);
 
-        int neededAmmo = magazineSize - currentAmmo;
-        int ammoToLoad = Mathf.Min(neededAmmo, reserveAmmo);
-
-        currentAmmo += ammoToLoad;
-        reserveAmmo -= ammoToLoad;
-
-        isReloading = false;
-
+        currentAmmo = magazineSize;
         OnAmmoChanged?.Invoke();
         Reloading?.Invoke(false);
+        isReloading = false;
 
         Debug.Log("Reloaded");
+
     }
 }
