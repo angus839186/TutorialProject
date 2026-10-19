@@ -1,12 +1,12 @@
-using System;
 using UnityEngine;
+using System;
 
 public class PlayerHealth : MonoBehaviour
 {
     [Min(1)]
     public int maxHealth = 100;
 
-    public int currentHealth;
+    public int currentHealth = 0;
 
     public event Action OnHealthChanged;
 
@@ -17,26 +17,13 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (currentHealth <= 0)
-        {
-            return;
-        }
-
-        if (damage <= 0)
-        {
-            return;
-        }
-
+        if (currentHealth <= 0) return;
+        if (damage <= 0) return;
         currentHealth = Mathf.Max(currentHealth - damage, 0);
 
         OnHealthChanged?.Invoke();
 
-        Debug.Log(
-            "Player Health: " +
-            currentHealth +
-            "/" +
-            maxHealth
-        );
+        Debug.Log("Player Health:" + currentHealth + "/" + maxHealth);
 
         if (currentHealth <= 0)
         {
@@ -46,6 +33,6 @@ public class PlayerHealth : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("Player Died");
+        Debug.Log("Player died");
     }
 }

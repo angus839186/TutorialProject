@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     [Header("輸入")]
     [SerializeField] PlayerInput Input;
 
+
+
     [Header("動作")]
     InputAction move;
     InputAction look;

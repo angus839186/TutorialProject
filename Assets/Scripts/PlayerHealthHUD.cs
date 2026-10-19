@@ -5,32 +5,27 @@ using UnityEngine.UI;
 public class PlayerHealthHUD : MonoBehaviour
 {
     [SerializeField] PlayerHealth playerHealth;
-    [SerializeField] Slider healthSlider;
+    [SerializeField] Slider healthBar;
     [SerializeField] TMP_Text healthText;
 
     void OnEnable()
     {
         playerHealth.OnHealthChanged += RefreshHealth;
     }
-
+    void OnDisable()
+    {
+        playerHealth.OnHealthChanged -= RefreshHealth;
+    }
     void Start()
     {
         RefreshHealth();
     }
 
-    void OnDisable()
-    {
-        playerHealth.OnHealthChanged -= RefreshHealth;
-    }
 
     void RefreshHealth()
     {
-        healthSlider.maxValue = playerHealth.maxHealth;
-        healthSlider.value = playerHealth.currentHealth;
-
-        healthText.text =
-            playerHealth.currentHealth +
-            " / " +
-            playerHealth.maxHealth;
+        healthBar.maxValue = playerHealth.maxHealth;
+        healthBar.value = playerHealth.currentHealth;
+        healthText.text = playerHealth.currentHealth + "/" + playerHealth.maxHealth;
     }
 }
